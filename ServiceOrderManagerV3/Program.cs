@@ -1,8 +1,17 @@
+using Microsoft.Extensions.Options;
+using ServiceOrderManagerV3.Data;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Injetando dependencia do db context options do arquivo AppDbCOntext
+builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ServiceOrderManagerV3")));
+
+// (options => options.UseSqlServer == Usanda metodos do options como argumento que herda do entity framework
+// Metodo use sql server usa sql server == Recebe uma string de conexao definida no appsetting (Examamente mesmo nome )
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
