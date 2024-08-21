@@ -1,0 +1,28 @@
+﻿<h1>Clients</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Cnpj</th>
+            <th>Nome</th>
+            <th>Email</th>
+            <th>Address</th>
+        </tr> 
+    </thead>
+    <tbody>
+        @foreach (var client in Model)
+        {
+            <tr>
+                <td>@client.Id</td>
+                <td>@client.Cnpj</td>
+                <td>@client.Name</td>
+                <td>@client.Email</td>
+                <td>@client.Address</td>
+                <td>
+                    <a>Edit</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
