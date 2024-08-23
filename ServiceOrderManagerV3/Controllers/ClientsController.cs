@@ -9,7 +9,7 @@ namespace ServiceOrderManagerV3.Controllers
 {
     public class ClientsController : Controller
     {
-       
+
         private readonly AppDbContext dbContext;
 
         public ClientsController(AppDbContext dbContext)
@@ -22,7 +22,7 @@ namespace ServiceOrderManagerV3.Controllers
         {
             return View();
         }
-     
+
         [HttpPost]
         public async Task<IActionResult> Add(AddClientViewModel viewModel)
         {
@@ -37,15 +37,41 @@ namespace ServiceOrderManagerV3.Controllers
             await dbContext.SaveChangesAsync();
             return View();
         }
-        //1. Fazer nova pagina com lista dos clientes adicionados
-        //2. Fazer a rota para nova pagina
-        //3. Fazer a action para nova pagina
+
         [HttpGet]
-         public async Task <IActionResult> List()
+        public async Task<IActionResult> List()
         {
             var client = await dbContext.Clients.ToListAsync();
 
             return View(client);
+        }
+        // Editando cliente
+        [HttpGet]
+        public async Task<IActionResult> Edit(Guid id)
+        {
+            var student = await dbContext.Clients.FindAsync(id);
+            // Seleciona view e clica e addView
+            return View();
+        }
+
+        // A ediçao irá seguir a mesma lógica do adicionar, pegando os dados do relátorio, vamos fazer o post para salvar as alterações
+        [HttpPost]
+        public async Task<IActionResult> Edit(Client viewModel)
+        {
+            // Recebe valores inseridos no formulário
+            var client = await dbContext.Clients.FindAsync(viewModel.Id);
+            // Checar informaçoes inseridas  
+            if (client is not null)
+            {
+                client.Name = viewModel.Name;
+                client.Cnpj = viewModel.Cnpj;
+                client.Email = viewModel.Email;
+                client.Address = viewModel.Address;
+
+                // Salva alterações
+                await dbContext.SaveChangesAsync();
+            }
+            return RedirectToAction("List", "Clients");
         }
     }
 }
